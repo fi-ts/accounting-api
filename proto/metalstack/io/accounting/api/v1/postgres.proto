@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service PostgresService {
+  rpc Added(PostgresReport) returns (Empty);
+  rpc Modified(PostgresReport) returns (Empty);
+  rpc Deleted(PostgresReport) returns (Empty);
+
+  rpc Usage(PostgresUsageRequest) returns (PostgresUsageResponse);
+}
+
+message Postgres {
+  string tenant = 1;
+  string projectid = 2;
+  string partition = 3;
+  string id = 4;
+  string description = 5;
+  string version = 6;
+  string cpu = 7;
+  string memory = 8;
+  string storage = 9;
+  int32 replicas = 10;
+  google.protobuf.Timestamp timestamp = 11;
+  google.protobuf.Timestamp start = 12;
+  google.protobuf.Timestamp end = 13;
+  repeated string annotations = 14;
+}
+
+message PostgresReport {
+  Postgres postgres = 1;
+}
+
+message PostgresUsageRequest {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  google.protobuf.StringValue tenant = 3;
+  google.protobuf.StringValue projectid = 4;
+  google.protobuf.StringValue id = 5;
+  repeated string annotations = 6;
+}
+
+message PostgresUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated PostgresUsage usage = 3;
+  PostgresUsageAccumuluated accumulated_usage = 4;
+}
+
+message PostgresUsage {
+  string id = 1;
+  string description = 2;
+  string projectid = 3;
+  string tenant = 4;
+  string partition = 5;
+  google.protobuf.Timestamp start = 6;
+  google.protobuf.Timestamp end = 7;
+  google.protobuf.Duration lifetime = 8;
+  string cpu_seconds = 9;
+  string memory_seconds = 10;
+  string storage_seconds = 11;
+  int32 replicas = 12;
+  repeated string warnings = 13;
+  repeated string annotations = 14;
+  string tenantname = 15;
+  string contractnumber = 16;
+  string debtorid = 17;
+  string projectname = 18;
+}
+
+message PostgresUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+  string cpu_seconds = 2;
+  string memory_seconds = 3;
+  string storage_seconds = 4;
+}

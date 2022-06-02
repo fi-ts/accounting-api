@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option go_package = "pkg/apis/v1";
+
+message Empty {}
+
+message Report {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string clusterid = 4;
+  string clustername = 5;
+  google.protobuf.Timestamp timestamp = 6;
+  string projectname = 7;
+}
+
+message KubernetesResourceReport {
+  Report report = 1;
+  string namespace = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+}
+
+message UsageQuery {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  google.protobuf.StringValue tenant = 3;
+  google.protobuf.StringValue projectid = 4;
+  google.protobuf.StringValue clusterid = 5;
+}

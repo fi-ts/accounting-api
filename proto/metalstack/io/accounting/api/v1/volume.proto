@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service VolumeService {
+  rpc Added(VolumeReport) returns (Empty);
+  rpc Modified(VolumeReport) returns (Empty);
+  rpc Deleted(VolumeReport) returns (Empty);
+
+  rpc Usage(VolumeUsageRequest) returns (VolumeUsageResponse);
+}
+
+message Volume {
+  string class = 1;
+  string name = 2;
+  string type = 3;
+  string size = 4;
+  repeated string annotations = 5;
+  string uuid = 6;
+}
+
+message VolumeReport {
+  KubernetesResourceReport kubernetes_report = 1;
+  Volume volume = 2;
+}
+
+message VolumeUsageRequest {
+  UsageQuery query = 1;
+  google.protobuf.StringValue namespace = 2;
+  google.protobuf.StringValue storageclass = 4;
+  google.protobuf.StringValue type = 5;
+  repeated string annotations = 3;
+}
+
+message VolumeUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated VolumeUsage usage = 3;
+  VolumeUsageAccumuluated accumulated_usage = 4;
+}
+
+message VolumeUsage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string clusterid = 4;
+  string clustername = 5;
+  string class = 6;
+  string type = 7;
+  string name = 8;
+  google.protobuf.Timestamp start = 9;
+  google.protobuf.Timestamp end = 10;
+  google.protobuf.Duration lifetime = 11;
+  string capacity_seconds = 12;
+  repeated string warnings = 13;
+  repeated string annotations = 14;
+  string uuid = 15;
+  string projectname = 16;
+  string tenantname = 17;
+  string contractnumber = 18;
+  string debtorid = 19;
+}
+
+message VolumeUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+  string capacity_seconds = 2;
+}

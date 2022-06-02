@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/apis/v1";
+
+service InfoService {
+  rpc Projects(ProjectInfoRequest) returns (ProjectInfoResponse);
+  rpc Tenants(TenantInfoRequest) returns (TenantInfoResponse);
+}
+
+message TimeQuery {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+}
+
+message Project {
+  string id = 1;
+  string tenant = 2;
+}
+
+message ProjectInfoRequest {
+  TimeQuery q = 1;
+}
+
+message ProjectInfoResponse {
+  repeated Project projects = 1;
+}
+
+message TenantInfoRequest {
+  TimeQuery q = 1;
+}
+
+message TenantInfoResponse {
+  repeated string ids = 1;
+}

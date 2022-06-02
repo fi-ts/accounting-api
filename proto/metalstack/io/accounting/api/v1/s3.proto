@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service S3Service {
+  rpc BucketStats(S3BucketReport) returns (Empty);
+
+  rpc Usage(S3UsageRequest) returns (S3UsageResponse);
+}
+
+message S3Bucket {
+  string user = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string partition = 4;
+  string bucket_name = 5;
+  string bucket_id = 6;
+  uint64 size = 7;
+  uint64 number_of_objects = 9;
+  google.protobuf.Timestamp timestamp = 10;
+  google.protobuf.Timestamp creation_time = 11;
+  string projectname = 12;
+}
+
+message S3BucketReport {
+  repeated S3Bucket buckets = 1;
+}
+
+message S3UsageRequest {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  google.protobuf.StringValue tenant = 3;
+  google.protobuf.StringValue projectid = 4;
+}
+
+message S3UsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated S3Usage usage = 3;
+  S3UsageAccumuluated accumulated_usage = 4;
+}
+
+message S3Usage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string user = 4;
+  string bucket_name = 5;
+  string current_number_of_objects = 6;
+  google.protobuf.Timestamp start = 7;
+  google.protobuf.Timestamp end = 8;
+  google.protobuf.Duration lifetime = 9;
+  string storage_seconds = 10;
+  repeated string warnings = 11;
+  string bucket_id = 12;
+  string current_size = 13;
+  string projectname = 14;
+  string tenantname = 15;
+  string contractnumber = 16;
+  string debtorid = 17;
+}
+
+message S3UsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+  string storage_seconds = 2;
+  string current_number_of_objects = 3;
+  string current_size = 4;
+}

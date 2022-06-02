@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service ClusterService {
+  rpc Added(ClusterReport) returns (Empty);
+  rpc Modified(ClusterReport) returns (Empty);
+  rpc Deleted(ClusterReport) returns (Empty);
+
+  rpc Usage(ClusterUsageRequest) returns (ClusterUsageResponse);
+}
+
+message ClusterReport {
+  Report report = 1;
+  google.protobuf.Timestamp start = 2;
+  google.protobuf.Timestamp end = 3;
+  repeated string annotations = 4;
+  string purpose = 5;
+  repeated ClusterWorkerGroup workers = 6;
+}
+
+message ClusterWorkerGroup {
+  string name = 1;
+  string type = 2;
+  uint32 count = 3;
+}
+
+message ClusterUsageRequest {
+  UsageQuery query = 1;
+}
+
+message ClusterUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated ClusterUsage usage = 3;
+  ClusterUsageAccumuluated accumulated_usage = 4;
+}
+
+message ClusterUsage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string clusterid = 4;
+  string clustername = 5;
+  google.protobuf.Timestamp cluster_start = 6;
+  google.protobuf.Timestamp cluster_end = 7;
+  google.protobuf.Duration lifetime = 8;
+  repeated string warnings = 9;
+  string projectname = 10;
+  repeated string annotations = 11;
+  string tenantname = 12;
+  string contractnumber = 13;
+  string debtorid = 14;
+  string purpose = 15;
+  string average_worker_groups = 16;
+  repeated ClusterWorkerGroup workers = 17;
+}
+
+message ClusterUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+}

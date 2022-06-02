@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service NetworkTrafficService {
+  rpc Modified(NetworkTrafficReport) returns (Empty);
+
+  rpc Usage(NetworkUsageRequest) returns (NetworkUsageResponse);
+}
+
+message NetworkTraffic {
+  string device = 1;
+  uint64 in = 2;
+  uint64 out = 3;
+  uint64 total = 4 [deprecated = true];
+}
+
+message NetworkTrafficReport {
+  Report report = 1;
+  repeated NetworkTraffic traffic_reports = 2;
+}
+
+message NetworkUsageRequest {
+  UsageQuery query = 1;
+  google.protobuf.StringValue device = 2;
+}
+
+message NetworkUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated NetworkUsage usage = 3;
+  NetworkUsageAccumuluated accumulated_usage = 4;
+}
+
+message NetworkUsage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string clusterid = 4;
+  string clustername = 5;
+  string device = 6;
+  string in_bytes = 7;
+  string out_bytes = 8;
+  google.protobuf.Duration lifetime = 11;
+  repeated string warnings = 12;
+  string total_bytes = 13;
+  string projectname = 14;
+  repeated string annotations = 15;
+  string tenantname = 16;
+  string contractnumber = 17;
+  string debtorid = 18;
+}
+
+message NetworkUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+  string in_bytes = 2;
+  string out_bytes = 3;
+  string total_bytes = 4;
+}

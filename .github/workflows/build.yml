@@ -1,0 +1,38 @@
+---
+name: Build Action
+on:
+  pull_request:
+    branches:
+      - main
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.18
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.18
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: setup buf
+      uses: bufbuild/buf-setup-action@v1
+      with:
+        version: '1.4.0'
+    - name: make
+      run: |
+        make
+        make check-diff
+
+    - uses: release-drafter/release-drafter@v5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

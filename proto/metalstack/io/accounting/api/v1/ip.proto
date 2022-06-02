@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service IPService {
+  rpc Added(IPReport) returns (Empty);
+  rpc Modified(IPReport) returns (Empty);
+  rpc Deleted(IPReport) returns (Empty);
+
+  rpc Usage(IPUsageRequest) returns (IPUsageResponse);
+}
+
+message IP {
+  string address = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string uuid = 4;
+  google.protobuf.Timestamp start = 5;
+  google.protobuf.Timestamp end = 6;
+  repeated string annotations = 7;
+  string projectname = 8;
+}
+
+message IPReport {
+  google.protobuf.Timestamp timestamp = 3;
+  repeated IP ips = 5;
+}
+
+message IPUsageRequest {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  google.protobuf.StringValue tenant = 3;
+  google.protobuf.StringValue projectid = 4;
+  repeated string annotations = 5;
+}
+
+message IPUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated IPUsage usage = 3;
+  IPUsageAccumuluated accumulated_usage = 4;
+}
+
+message IPUsage {
+  string tenant = 1;
+  string projectid = 2;
+  string ip = 3;
+  google.protobuf.Timestamp ip_start = 4;
+  google.protobuf.Timestamp ip_end = 5;
+  google.protobuf.Duration lifetime = 6;
+  repeated string warnings = 7;
+  string uuid = 8;
+  string projectname = 9;
+  repeated string annotations = 10;
+  string tenantname = 11;
+  string contractnumber = 12;
+  string debtorid = 13;
+}
+
+message IPUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+}
