@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	v1 "github.com/fi-ts/accounting-go/pkg/apis/v1"
@@ -41,7 +41,7 @@ func NewClient(ctx context.Context, hostname string, port int, certFile string, 
 	}
 
 	if caFile != "" {
-		ca, err := ioutil.ReadFile(caFile)
+		ca, err := os.ReadFile(caFile)
 		if err != nil {
 			return nil, fmt.Errorf("could not read ca certificate: %w", err)
 		}
