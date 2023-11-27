@@ -9,7 +9,7 @@ proto:
 .PHONY: mocks
 mocks:
 	rm -rf test/mocks
-	docker run --rm --user $$(id -u):$$(id -g) -w /work -v ${PWD}:/work vektra/mockery:v2.22.1 --keeptree --all --dir pkg/apis --output test/mocks
+	docker run --rm --user $$(id -u):$$(id -g) -w /work -v ${PWD}:/work vektra/mockery:v2.38.0 --keeptree --all --dir pkg/apis --output test/mocks
 
 .PHONY: test
 test:

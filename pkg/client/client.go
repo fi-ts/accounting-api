@@ -1,14 +1,14 @@
 package client
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	v1 "github.com/fi-ts/accounting-go/pkg/apis/v1"
-	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
@@ -41,7 +41,7 @@ func NewClient(ctx context.Context, hostname string, port int, certFile string, 
 	}
 
 	if caFile != "" {
-		ca, err := ioutil.ReadFile(caFile)
+		ca, err := os.ReadFile(caFile)
 		if err != nil {
 			return nil, fmt.Errorf("could not read ca certificate: %w", err)
 		}
@@ -65,8 +65,8 @@ func NewClient(ctx context.Context, hostname string, port int, certFile string, 
 	})
 
 	kacp := keepalive.ClientParameters{
-		Time:                10 * time.Second, // send pings every 10 seconds if there is no activity
-		Timeout:             time.Second,      // wait 1 second for ping ack before considering the connection dead
+		Time:                20 * time.Second, // send pings every 10 seconds if there is no activity
+		Timeout:             3 * time.Second,  // wait 1 second for ping ack before considering the connection dead
 		PermitWithoutStream: true,             // send pings even without active streams
 	}
 
