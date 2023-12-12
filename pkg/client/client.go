@@ -25,6 +25,8 @@ type AccountingClient interface {
 	NetworkTraffic() v1.NetworkTrafficServiceClient
 	Health() healthv1.HealthClient
 	Postgres() v1.PostgresServiceClient
+	Machine() v1.MachineServiceClient
+	ProductOption() v1.ProductOptionServiceClient
 	Close() error
 }
 
@@ -128,4 +130,12 @@ func (c client) Health() healthv1.HealthClient {
 
 func (c client) Postgres() v1.PostgresServiceClient {
 	return v1.NewPostgresServiceClient(c.conn)
+}
+
+func (c client) Machine() v1.MachineServiceClient {
+	return v1.NewMachineServiceClient(c.conn)
+}
+
+func (c client) ProductOption() v1.ProductOptionServiceClient {
+	return v1.NewProductOptionServiceClient(c.conn)
 }
