@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service MachineService {
+  rpc Added(MachineReport) returns (Empty);
+  rpc Modified(MachineReport) returns (Empty);
+  rpc Deleted(MachineReport) returns (Empty);
+
+  rpc Usage(MachineUsageRequest) returns (MachineUsageResponse);
+}
+
+message MachineReport {
+  Report report = 1;
+  google.protobuf.Timestamp start = 2;
+  google.protobuf.Timestamp end = 3;
+  string machineid = 4;
+  string machinename = 5;
+  string sizeid = 6;
+  string imageid = 7;
+}
+
+message MachineUsageRequest {
+  UsageQuery query = 1;
+  optional string sizeid = 2;
+}
+
+message MachineUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated MachineUsage usage = 3;
+  MachineUsageAccumuluated accumulated_usage = 4;
+}
+
+message MachineUsage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string machineid = 4;
+  string machinename = 5;
+  string sizeid = 6;
+  string imageid = 7;
+  google.protobuf.Timestamp start = 8;
+  google.protobuf.Timestamp end = 9;
+  google.protobuf.Duration lifetime = 10;
+  string projectname = 11;
+  string tenantname = 12;
+  string contractnumber = 13;
+  string debtorid = 14;
+}
+
+message MachineUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+}
