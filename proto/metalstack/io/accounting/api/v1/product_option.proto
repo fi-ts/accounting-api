@@ -31,7 +31,7 @@ message ProductOptionReport {
 
 message ProductOptionUsageRequest {
   UsageQuery query = 1;
-  ProductOption id = 2;
+  optional ProductOption id = 2;
 }
 
 message ProductOptionUsageResponse {
