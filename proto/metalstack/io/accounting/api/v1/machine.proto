@@ -29,6 +29,8 @@ message MachineReport {
 message MachineUsageRequest {
   UsageQuery query = 1;
   optional string sizeid = 2;
+  optional string machineid = 3;
+  optional string partition = 4;
 }
 
 message MachineUsageResponse {
@@ -46,13 +48,15 @@ message MachineUsage {
   string machinename = 5;
   string sizeid = 6;
   string imageid = 7;
-  google.protobuf.Timestamp start = 8;
-  google.protobuf.Timestamp end = 9;
-  google.protobuf.Duration lifetime = 10;
-  string projectname = 11;
-  string tenantname = 12;
-  string contractnumber = 13;
-  string debtorid = 14;
+  string clusterid = 8;
+  string clustername = 9;
+  google.protobuf.Timestamp start = 10;
+  google.protobuf.Timestamp end = 11;
+  google.protobuf.Duration lifetime = 12;
+  string projectname = 13;
+  string tenantname = 14;
+  string contractnumber = 15;
+  string debtorid = 16;
 }
 
 message MachineUsageAccumuluated {
