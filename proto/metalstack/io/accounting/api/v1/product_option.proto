@@ -28,6 +28,7 @@ service ProductOptionService {
 message ProductOptionReport {
   Report report = 1;
   ProductOption id = 2;
+  repeated string annotations = 3;
 }
 
 message ProductOptionUsageRequest {
