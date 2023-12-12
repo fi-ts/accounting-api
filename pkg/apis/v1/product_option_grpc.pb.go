@@ -19,9 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ProductOptionService_Added_FullMethodName    = "/metalstack.io.accounting.api.v1.ProductOptionService/Added"
 	ProductOptionService_Modified_FullMethodName = "/metalstack.io.accounting.api.v1.ProductOptionService/Modified"
-	ProductOptionService_Deleted_FullMethodName  = "/metalstack.io.accounting.api.v1.ProductOptionService/Deleted"
 	ProductOptionService_Usage_FullMethodName    = "/metalstack.io.accounting.api.v1.ProductOptionService/Usage"
 )
 
@@ -29,9 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductOptionServiceClient interface {
-	Added(ctx context.Context, in *ProductOptionReport, opts ...grpc.CallOption) (*Empty, error)
 	Modified(ctx context.Context, in *ProductOptionReport, opts ...grpc.CallOption) (*Empty, error)
-	Deleted(ctx context.Context, in *ProductOptionReport, opts ...grpc.CallOption) (*Empty, error)
 	Usage(ctx context.Context, in *ProductOptionUsageRequest, opts ...grpc.CallOption) (*ProductOptionUsageResponse, error)
 }
 
@@ -43,27 +39,9 @@ func NewProductOptionServiceClient(cc grpc.ClientConnInterface) ProductOptionSer
 	return &productOptionServiceClient{cc}
 }
 
-func (c *productOptionServiceClient) Added(ctx context.Context, in *ProductOptionReport, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, ProductOptionService_Added_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *productOptionServiceClient) Modified(ctx context.Context, in *ProductOptionReport, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, ProductOptionService_Modified_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *productOptionServiceClient) Deleted(ctx context.Context, in *ProductOptionReport, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, ProductOptionService_Deleted_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,9 +61,7 @@ func (c *productOptionServiceClient) Usage(ctx context.Context, in *ProductOptio
 // All implementations should embed UnimplementedProductOptionServiceServer
 // for forward compatibility
 type ProductOptionServiceServer interface {
-	Added(context.Context, *ProductOptionReport) (*Empty, error)
 	Modified(context.Context, *ProductOptionReport) (*Empty, error)
-	Deleted(context.Context, *ProductOptionReport) (*Empty, error)
 	Usage(context.Context, *ProductOptionUsageRequest) (*ProductOptionUsageResponse, error)
 }
 
@@ -93,14 +69,8 @@ type ProductOptionServiceServer interface {
 type UnimplementedProductOptionServiceServer struct {
 }
 
-func (UnimplementedProductOptionServiceServer) Added(context.Context, *ProductOptionReport) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Added not implemented")
-}
 func (UnimplementedProductOptionServiceServer) Modified(context.Context, *ProductOptionReport) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Modified not implemented")
-}
-func (UnimplementedProductOptionServiceServer) Deleted(context.Context, *ProductOptionReport) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Deleted not implemented")
 }
 func (UnimplementedProductOptionServiceServer) Usage(context.Context, *ProductOptionUsageRequest) (*ProductOptionUsageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Usage not implemented")
@@ -117,24 +87,6 @@ func RegisterProductOptionServiceServer(s grpc.ServiceRegistrar, srv ProductOpti
 	s.RegisterService(&ProductOptionService_ServiceDesc, srv)
 }
 
-func _ProductOptionService_Added_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProductOptionReport)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductOptionServiceServer).Added(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProductOptionService_Added_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductOptionServiceServer).Added(ctx, req.(*ProductOptionReport))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ProductOptionService_Modified_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProductOptionReport)
 	if err := dec(in); err != nil {
@@ -149,24 +101,6 @@ func _ProductOptionService_Modified_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProductOptionServiceServer).Modified(ctx, req.(*ProductOptionReport))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProductOptionService_Deleted_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProductOptionReport)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductOptionServiceServer).Deleted(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProductOptionService_Deleted_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductOptionServiceServer).Deleted(ctx, req.(*ProductOptionReport))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -197,16 +131,8 @@ var ProductOptionService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ProductOptionServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Added",
-			Handler:    _ProductOptionService_Added_Handler,
-		},
-		{
 			MethodName: "Modified",
 			Handler:    _ProductOptionService_Modified_Handler,
-		},
-		{
-			MethodName: "Deleted",
-			Handler:    _ProductOptionService_Deleted_Handler,
 		},
 		{
 			MethodName: "Usage",

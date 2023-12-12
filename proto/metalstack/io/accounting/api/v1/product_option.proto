@@ -18,9 +18,7 @@ enum ProductOption {
 }
 
 service ProductOptionService {
-  rpc Added(ProductOptionReport) returns (Empty);
   rpc Modified(ProductOptionReport) returns (Empty);
-  rpc Deleted(ProductOptionReport) returns (Empty);
 
   rpc Usage(ProductOptionUsageRequest) returns (ProductOptionUsageResponse);
 }
