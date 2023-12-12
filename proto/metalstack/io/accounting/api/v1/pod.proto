@@ -4,7 +4,6 @@ package metalstack.io.accounting.api.v1;
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
 import "metalstack/io/accounting/api/v1/common.proto";
 
 option go_package = "pkg/apis/v1";
@@ -34,7 +33,7 @@ message PodReport {
 
 message ContainerUsageRequest {
   UsageQuery query = 1;
-  google.protobuf.StringValue namespace = 2;
+  optional string namespace = 2;
   repeated string annotations = 3;
 }
 

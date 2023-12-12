@@ -3,7 +3,6 @@ syntax = "proto3";
 package metalstack.io.accounting.api.v1;
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
 
 option go_package = "pkg/apis/v1";
 
@@ -29,7 +28,7 @@ message KubernetesResourceReport {
 message UsageQuery {
   google.protobuf.Timestamp from = 1;
   google.protobuf.Timestamp to = 2;
-  google.protobuf.StringValue tenant = 3;
-  google.protobuf.StringValue projectid = 4;
-  google.protobuf.StringValue clusterid = 5;
+  optional string tenant = 3;
+  optional string projectid = 4;
+  optional string clusterid = 5;
 }
