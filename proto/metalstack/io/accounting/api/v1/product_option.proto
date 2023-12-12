@@ -27,9 +27,7 @@ service ProductOptionService {
 
 message ProductOptionReport {
   Report report = 1;
-  google.protobuf.Timestamp start = 2;
-  google.protobuf.Timestamp end = 3;
-  ProductOption id = 4;
+  ProductOption id = 2;
 }
 
 message ProductOptionUsageRequest {
@@ -49,15 +47,13 @@ message ProductOptionUsage {
   string projectid = 3;
   string clusterid = 4;
   string clustername = 5;
-  google.protobuf.Timestamp start = 6;
-  google.protobuf.Timestamp end = 7;
-  google.protobuf.Duration lifetime = 8;
-  ProductOption id = 9;
-  string projectname = 10;
-  repeated string annotations = 11;
-  string tenantname = 12;
-  string contractnumber = 13;
-  string debtorid = 14;
+  google.protobuf.Duration lifetime = 6;
+  ProductOption id = 7;
+  string projectname = 8;
+  repeated string annotations = 9;
+  string tenantname = 10;
+  string contractnumber = 11;
+  string debtorid = 12;
 }
 
 message ProductOptionUsageAccumuluated {
