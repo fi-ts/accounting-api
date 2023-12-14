@@ -20,6 +20,8 @@ type AccountingMockFns struct {
 	NetworkTraffic func(mock *mock.Mock)
 	Volume         func(mock *mock.Mock)
 	Postgres       func(mock *mock.Mock)
+	ProductOption  func(mock *mock.Mock)
+	Machine        func(mock *mock.Mock)
 }
 
 type AccountingMockClient struct {
@@ -31,6 +33,8 @@ type AccountingMockClient struct {
 	NetworkTrafficService *accmocks.NetworkTrafficServiceClient
 	VolumeService         *accmocks.VolumeServiceClient
 	PostgresService       *accmocks.PostgresServiceClient
+	ProductOptionService  *accmocks.ProductOptionServiceClient
+	MachineService        *accmocks.MachineServiceClient
 }
 
 func NewAccountingMockClient(mockFns *AccountingMockFns) (*AccountingMockClient, accountingclient.AccountingClient) {
@@ -43,6 +47,8 @@ func NewAccountingMockClient(mockFns *AccountingMockFns) (*AccountingMockClient,
 		NetworkTrafficService: &accmocks.NetworkTrafficServiceClient{},
 		VolumeService:         &accmocks.VolumeServiceClient{},
 		PostgresService:       &accmocks.PostgresServiceClient{},
+		ProductOptionService:  &accmocks.ProductOptionServiceClient{},
+		MachineService:        &accmocks.MachineServiceClient{},
 	}
 
 	if mockFns != nil {
@@ -69,6 +75,12 @@ func NewAccountingMockClient(mockFns *AccountingMockFns) (*AccountingMockClient,
 		}
 		if mockFns.Postgres != nil {
 			mockFns.Postgres(&a.PostgresService.Mock)
+		}
+		if mockFns.ProductOption != nil {
+			mockFns.ProductOption(&a.ProductOptionService.Mock)
+		}
+		if mockFns.Machine != nil {
+			mockFns.Machine(&a.MachineService.Mock)
 		}
 	}
 
@@ -115,6 +127,14 @@ func (c *AccountingMockClient) Postgres() v1.PostgresServiceClient {
 	return c.PostgresService
 }
 
+func (c *AccountingMockClient) ProductOption() v1.ProductOptionServiceClient {
+	return c.ProductOptionService
+}
+
+func (c *AccountingMockClient) Machine() v1.MachineServiceClient {
+	return c.MachineService
+}
+
 func (c *AccountingMockClient) AssertExpectations(t *testing.T) {
 	_ = c.ClusterService.AssertExpectations(t)
 	_ = c.PodService.AssertExpectations(t)
@@ -124,4 +144,6 @@ func (c *AccountingMockClient) AssertExpectations(t *testing.T) {
 	_ = c.NetworkTrafficService.AssertExpectations(t)
 	_ = c.VolumeService.AssertExpectations(t)
 	_ = c.PostgresService.AssertExpectations(t)
+	_ = c.ProductOptionService.AssertExpectations(t)
+	_ = c.MachineService.AssertExpectations(t)
 }

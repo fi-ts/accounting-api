@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+enum ProductOption {
+  PRODUCT_OPTION_UNSPECIFIED = 0;
+  PRODUCT_OPTION_AUDIT_EXTENSION = 1;
+  PRODUCT_OPTION_HA_CONTROL_PLANE = 2;
+  PRODUCT_OPTION_MONITORING_STACK = 3;
+  PRODUCT_OPTION_LOGGING_STACK = 4;
+  PRODUCT_OPTION_CLUSTER_ISOLATION = 5;
+}
+
+service ProductOptionService {
+  rpc Modified(ProductOptionReport) returns (Empty);
+
+  rpc Usage(ProductOptionUsageRequest) returns (ProductOptionUsageResponse);
+}
+
+message ProductOptionReport {
+  Report report = 1;
+  ProductOption id = 2;
+  repeated string annotations = 3;
+}
+
+message ProductOptionUsageRequest {
+  UsageQuery query = 1;
+  optional ProductOption id = 2;
+}
+
+message ProductOptionUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated ProductOptionUsage usage = 3;
+  ProductOptionUsageAccumuluated accumulated_usage = 4;
+}
+
+message ProductOptionUsage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string clusterid = 4;
+  string clustername = 5;
+  google.protobuf.Duration lifetime = 6;
+  ProductOption id = 7;
+  string projectname = 8;
+  repeated string annotations = 9;
+  string tenantname = 10;
+  string contractnumber = 11;
+  string debtorid = 12;
+}
+
+message ProductOptionUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+}
