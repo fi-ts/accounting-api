@@ -24,6 +24,7 @@ message MachineReport {
   string machinename = 5;
   string sizeid = 6;
   string imageid = 7;
+  string allocationuuid = 8;
 }
 
 message MachineUsageRequest {
@@ -31,6 +32,7 @@ message MachineUsageRequest {
   optional string sizeid = 2;
   optional string machineid = 3;
   optional string partition = 4;
+  optional string allocationuuid = 5;
 }
 
 message MachineUsageResponse {
@@ -57,6 +59,7 @@ message MachineUsage {
   string tenantname = 14;
   string contractnumber = 15;
   string debtorid = 16;
+  string allocationuuid = 17;
 }
 
 message MachineUsageAccumuluated {
