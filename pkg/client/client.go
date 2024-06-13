@@ -1,7 +1,6 @@
 package client
 
 import (
-	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
@@ -34,7 +33,7 @@ type client struct {
 	conn *grpc.ClientConn
 }
 
-func NewClient(ctx context.Context, hostname string, port int, certFile string, keyFile string, caFile string, additionalOpts ...grpc.DialOption) (AccountingClient, error) {
+func NewClient(hostname string, port int, certFile string, keyFile string, caFile string, additionalOpts ...grpc.DialOption) (AccountingClient, error) {
 	address := fmt.Sprintf("%s:%d", hostname, port)
 
 	certPool, err := x509.SystemCertPool()
@@ -74,13 +73,12 @@ func NewClient(ctx context.Context, hostname string, port int, certFile string, 
 
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(creds),
-		grpc.WithBlock(),
 		grpc.WithKeepaliveParams(kacp),
 	}
 
 	additionalOpts = append(opts, additionalOpts...)
 
-	conn, err := grpc.DialContext(ctx, address, additionalOpts...)
+	conn, err := grpc.NewClient(address, additionalOpts...)
 	if err != nil {
 		return nil, err
 	}
