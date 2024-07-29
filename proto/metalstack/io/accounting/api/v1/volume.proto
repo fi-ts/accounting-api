@@ -17,7 +17,9 @@ service VolumeService {
 }
 
 message Volume {
-  string class = 1;
+  reserved 1;
+  reserved "class";
+
   string name = 2;
   string type = 3;
   string size = 4;
@@ -31,9 +33,11 @@ message VolumeReport {
 }
 
 message VolumeUsageRequest {
+  reserved 4;
+  reserved "storageclass";
+
   UsageQuery query = 1;
   optional string namespace = 2;
-  optional string storageclass = 4;
   optional string type = 5;
   repeated string annotations = 3;
 }
@@ -46,12 +50,14 @@ message VolumeUsageResponse {
 }
 
 message VolumeUsage {
+  reserved 6;
+  reserved "class";
+
   string partition = 1;
   string tenant = 2;
   string projectid = 3;
   string clusterid = 4;
   string clustername = 5;
-  string class = 6;
   string type = 7;
   string name = 8;
   google.protobuf.Timestamp start = 9;
