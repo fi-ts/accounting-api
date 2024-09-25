@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package metalstack.io.accounting.api.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "metalstack/io/accounting/api/v1/common.proto";
+
+option go_package = "pkg/apis/v1";
+
+service MachineReservationService {
+  rpc Added(MachineReservationReport) returns (Empty);
+  rpc Modified(MachineReservationReport) returns (Empty);
+  rpc Deleted(MachineReservationReport) returns (Empty);
+
+  rpc Usage(MachineReservationUsageRequest) returns (MachineReservationUsageResponse);
+}
+
+message MachineReservationReport {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  google.protobuf.Timestamp timestamp = 5;
+  string projectname = 6;
+  google.protobuf.Timestamp start = 7;
+  google.protobuf.Timestamp end = 8;
+  string id = 9;
+  string sizeid = 10;
+  int32 amount = 11;
+  int32 used_amount = 12;
+  int32 unused_amount = 13;
+  map<string, string> labels = 14;
+}
+
+message MachineReservationUsageRequest {
+  UsageQuery query = 1;
+  optional string sizeid = 2;
+  optional string partition = 3;
+}
+
+message MachineReservationUsageResponse {
+  google.protobuf.Timestamp from = 1;
+  google.protobuf.Timestamp to = 2;
+  repeated MachineReservationUsage usage = 3;
+  MachineReservationUsageAccumuluated accumulated_usage = 4;
+}
+
+message MachineReservationUsage {
+  string partition = 1;
+  string tenant = 2;
+  string projectid = 3;
+  string id = 4;
+  string sizeid = 5;
+  google.protobuf.Timestamp start = 6;
+  google.protobuf.Timestamp end = 7;
+  string reservation_seconds = 8;
+  string average = 9;
+  string projectname = 10;
+  string tenantname = 11;
+  string contractnumber = 12;
+  string debtorid = 13;
+}
+
+message MachineReservationUsageAccumuluated {
+  google.protobuf.Duration lifetime = 1;
+}
