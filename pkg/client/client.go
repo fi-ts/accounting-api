@@ -25,6 +25,7 @@ type AccountingClient interface {
 	Health() healthv1.HealthClient
 	Postgres() v1.PostgresServiceClient
 	Machine() v1.MachineServiceClient
+	MachineReservation() v1.MachineReservationServiceClient
 	ProductOption() v1.ProductOptionServiceClient
 	Close() error
 }
@@ -132,6 +133,10 @@ func (c client) Postgres() v1.PostgresServiceClient {
 
 func (c client) Machine() v1.MachineServiceClient {
 	return v1.NewMachineServiceClient(c.conn)
+}
+
+func (c client) MachineReservation() v1.MachineReservationServiceClient {
+	return v1.NewMachineReservationServiceClient(c.conn)
 }
 
 func (c client) ProductOption() v1.ProductOptionServiceClient {

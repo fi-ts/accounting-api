@@ -12,43 +12,46 @@ import (
 )
 
 type AccountingMockFns struct {
-	Cluster        func(mock *mock.Mock)
-	Pod            func(mock *mock.Mock)
-	S3             func(mock *mock.Mock)
-	IP             func(mock *mock.Mock)
-	Info           func(mock *mock.Mock)
-	NetworkTraffic func(mock *mock.Mock)
-	Volume         func(mock *mock.Mock)
-	Postgres       func(mock *mock.Mock)
-	ProductOption  func(mock *mock.Mock)
-	Machine        func(mock *mock.Mock)
+	Cluster            func(mock *mock.Mock)
+	Pod                func(mock *mock.Mock)
+	S3                 func(mock *mock.Mock)
+	IP                 func(mock *mock.Mock)
+	Info               func(mock *mock.Mock)
+	NetworkTraffic     func(mock *mock.Mock)
+	Volume             func(mock *mock.Mock)
+	Postgres           func(mock *mock.Mock)
+	ProductOption      func(mock *mock.Mock)
+	Machine            func(mock *mock.Mock)
+	MachineReservation func(mock *mock.Mock)
 }
 
 type AccountingMockClient struct {
-	ClusterService        *accmocks.ClusterServiceClient
-	PodService            *accmocks.PodServiceClient
-	S3Service             *accmocks.S3ServiceClient
-	IPService             *accmocks.IPServiceClient
-	InfoService           *accmocks.InfoServiceClient
-	NetworkTrafficService *accmocks.NetworkTrafficServiceClient
-	VolumeService         *accmocks.VolumeServiceClient
-	PostgresService       *accmocks.PostgresServiceClient
-	ProductOptionService  *accmocks.ProductOptionServiceClient
-	MachineService        *accmocks.MachineServiceClient
+	ClusterService            *accmocks.ClusterServiceClient
+	PodService                *accmocks.PodServiceClient
+	S3Service                 *accmocks.S3ServiceClient
+	IPService                 *accmocks.IPServiceClient
+	InfoService               *accmocks.InfoServiceClient
+	NetworkTrafficService     *accmocks.NetworkTrafficServiceClient
+	VolumeService             *accmocks.VolumeServiceClient
+	PostgresService           *accmocks.PostgresServiceClient
+	ProductOptionService      *accmocks.ProductOptionServiceClient
+	MachineService            *accmocks.MachineServiceClient
+	MachineReservationService *accmocks.MachineReservationServiceClient
 }
 
 func NewAccountingMockClient(mockFns *AccountingMockFns) (*AccountingMockClient, accountingclient.AccountingClient) {
 	a := &AccountingMockClient{
-		ClusterService:        &accmocks.ClusterServiceClient{},
-		PodService:            &accmocks.PodServiceClient{},
-		S3Service:             &accmocks.S3ServiceClient{},
-		IPService:             &accmocks.IPServiceClient{},
-		InfoService:           &accmocks.InfoServiceClient{},
-		NetworkTrafficService: &accmocks.NetworkTrafficServiceClient{},
-		VolumeService:         &accmocks.VolumeServiceClient{},
-		PostgresService:       &accmocks.PostgresServiceClient{},
-		ProductOptionService:  &accmocks.ProductOptionServiceClient{},
-		MachineService:        &accmocks.MachineServiceClient{},
+		ClusterService:            &accmocks.ClusterServiceClient{},
+		PodService:                &accmocks.PodServiceClient{},
+		S3Service:                 &accmocks.S3ServiceClient{},
+		IPService:                 &accmocks.IPServiceClient{},
+		InfoService:               &accmocks.InfoServiceClient{},
+		NetworkTrafficService:     &accmocks.NetworkTrafficServiceClient{},
+		VolumeService:             &accmocks.VolumeServiceClient{},
+		PostgresService:           &accmocks.PostgresServiceClient{},
+		ProductOptionService:      &accmocks.ProductOptionServiceClient{},
+		MachineService:            &accmocks.MachineServiceClient{},
+		MachineReservationService: &accmocks.MachineReservationServiceClient{},
 	}
 
 	if mockFns != nil {
@@ -81,6 +84,9 @@ func NewAccountingMockClient(mockFns *AccountingMockFns) (*AccountingMockClient,
 		}
 		if mockFns.Machine != nil {
 			mockFns.Machine(&a.MachineService.Mock)
+		}
+		if mockFns.MachineReservation != nil {
+			mockFns.MachineReservation(&a.MachineReservationService.Mock)
 		}
 	}
 
@@ -135,6 +141,10 @@ func (c *AccountingMockClient) Machine() v1.MachineServiceClient {
 	return c.MachineService
 }
 
+func (c *AccountingMockClient) MachineReservation() v1.MachineReservationServiceClient {
+	return c.MachineReservationService
+}
+
 func (c *AccountingMockClient) AssertExpectations(t *testing.T) {
 	_ = c.ClusterService.AssertExpectations(t)
 	_ = c.PodService.AssertExpectations(t)
@@ -146,4 +156,5 @@ func (c *AccountingMockClient) AssertExpectations(t *testing.T) {
 	_ = c.PostgresService.AssertExpectations(t)
 	_ = c.ProductOptionService.AssertExpectations(t)
 	_ = c.MachineService.AssertExpectations(t)
+	_ = c.MachineReservationService.AssertExpectations(t)
 }
