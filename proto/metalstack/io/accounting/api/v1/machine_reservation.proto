@@ -32,8 +32,9 @@ message MachineReservationReport {
 
 message MachineReservationUsageRequest {
   UsageQuery query = 1;
-  optional string sizeid = 2;
-  optional string partition = 3;
+  optional string id = 2;
+  optional string sizeid = 3;
+  optional string partition = 4;
 }
 
 message MachineReservationUsageResponse {
