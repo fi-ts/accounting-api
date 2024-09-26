@@ -22,14 +22,12 @@ message MachineReservationReport {
   string projectid = 3;
   google.protobuf.Timestamp timestamp = 5;
   string projectname = 6;
-  google.protobuf.Timestamp start = 7;
-  google.protobuf.Timestamp end = 8;
-  string id = 9;
-  string sizeid = 10;
-  int32 amount = 11;
-  int32 used_amount = 12;
-  int32 unused_amount = 13;
-  map<string, string> labels = 14;
+  string id = 7;
+  string sizeid = 8;
+  int32 amount = 9;
+  int32 used_amount = 10;
+  int32 unused_amount = 11;
+  map<string, string> labels = 12;
 }
 
 message MachineReservationUsageRequest {
@@ -51,14 +49,12 @@ message MachineReservationUsage {
   string projectid = 3;
   string id = 4;
   string sizeid = 5;
-  google.protobuf.Timestamp start = 6;
-  google.protobuf.Timestamp end = 7;
-  string reservation_seconds = 8;
-  string average = 9;
-  string projectname = 10;
-  string tenantname = 11;
-  string contractnumber = 12;
-  string debtorid = 13;
+  string reservation_seconds = 6;
+  string average = 7;
+  string projectname = 8;
+  string tenantname = 9;
+  string contractnumber = 10;
+  string debtorid = 11;
 }
 
 message MachineReservationUsageAccumuluated {
